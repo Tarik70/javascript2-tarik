@@ -1,3 +1,4 @@
+
 const products = [
   { name: 'Laptop Pro', category: 'Electronics', price: 1299, stock: true },
   { name: 'Draadloze muis', category: 'Electronics', price: 29, stock: true },
@@ -16,29 +17,84 @@ const products = [
 let searchTerm = '';
 let sorting = '';
 
+const productsContainer = document.getElementById('products');
+const counter = document.getElementById('counter');
+const searchBar = document.getElementById('search-bar');
+
 const showProducts = (products) => {
-  // Toon elk product als een <article> in #products
-  // Laat in #counter de hoeveelheid producten zien
+  // Maak de bestaande productweergave leeg
+  productsContainer.innerHTML = '';
+
+  // Toon het aantal producten
+  counter.textContent = `${products.length} producten gevonden`;
+
+  // Maak voor elk product een article
+  products.forEach(product => {
+    const article = document.createElement('article');
+
+    const title = document.createElement('h3');
+    title.textContent = product.name;
+
+    const category = document.createElement('p');
+    category.textContent = `Categorie: ${product.category}`;
+    category.style.fontSize = '0.9rem';
+    category.style.color = '#7a6a58';
+    category.style.fontWeight = 'normal';
+    category.style.marginBottom = '0.5rem';
+
+    const price = document.createElement('p');
+    price.textContent = `€${product.price.toFixed(2)}`;
+
+    const stock = document.createElement('p');
+    stock.textContent = product.stock
+      ? 'Op voorraad'
+      : 'Niet op voorraad';
+    stock.style.fontSize = '0.9rem';
+    stock.style.fontWeight = 'normal';
+    stock.style.marginTop = '0.5rem';
+
+    article.appendChild(title);
+    article.appendChild(category);
+    article.appendChild(price);
+    article.appendChild(stock);
+
+    productsContainer.appendChild(article);
+  });
 };
 
 const filterProducts = () => {
-  // Maak een variabele 'filtered' aan door de products array te filteren op searchTerm
-  // Gebruik hiervoor filter() en includes() en toLowerCase()
+  // Filter op naam, zonder onderscheid tussen hoofdletters
+  let filtered = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // Filter hier op sorting:
-  // als sorting 'low' is, sorteer van laag naar hoog op prijs
-  // als sorting 'high' is, sorteer van hoog naar laag op prijs
+  // Sorteer op prijs
+  if (sorting === 'low') {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (sorting === 'high') {
+    filtered.sort((a, b) => b.price - a.price);
+  }
 
   showProducts(filtered);
 };
 
-// Maak een eventlistener voor de #search-bar input
-// Sla de waarde op in de searchTerm variabele en roep filterProducts() aan
+// Zoekbalk
+searchBar.addEventListener('input', () => {
+  searchTerm = searchBar.value;
+  filterProducts();
+});
 
-// Maak een eventlistener voor de #sort-low button
-// Zet sorting op 'low' en roep filterProducts() aan
+// Knop: prijs laag naar hoog
+document.getElementById('sort-low').addEventListener('click', () => {
+  sorting = 'low';
+  filterProducts();
+});
 
-// Maak een eventlistener voor de #sort-high button
-// Zet sorting op 'high' en roep filterProducts() aan
+// Knop: prijs hoog naar laag
+document.getElementById('sort-high').addEventListener('click', () => {
+  sorting = 'high';
+  filterProducts();
+});
 
+// Toon alle producten bij het openen
 filterProducts();
