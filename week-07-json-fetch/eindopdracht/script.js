@@ -1,26 +1,60 @@
 let allArticles = [];
 
 const showArticles = (articles) => {
-  // Zet elk artikel om naar een <article> met map() en toon het in #articles
-  // Toon de title, category en summary van elk artikel
+
+  const articlesSection = document.getElementById('articles');
+
+  const articlesHTML = articles.map(article => {
+    const { title, category, date, summary } = article;
+
+    return `
+      <article>
+        <span>${category} - ${date}</span>
+        <h2>${title}</h2>
+        <p>${summary}</p>
+      </article>
+    `;
+  });
+
+  articlesSection.innerHTML = articlesHTML.join('');
 };
 
 fetch('./news.json')
   .then(r => r.json())
   .then(articles => {
-    // Sla de artikelen op in allArticles
-    // Roep showArticles() aan met allArticles
+
+    allArticles = articles;
+
+    showArticles(allArticles);
   })
   .catch(error => console.error('Fout bij laden:', error));
 
-// Maak een eventlistener voor de #filter-alle button
-// Roep showArticles() aan met allArticles
 
-// Maak een eventlistener voor de #filter-stad button
-// Filter allArticles op category 'Stad' en roep showArticles() aan
 
-// Maak een eventlistener voor de #filter-technologie button
-// Filter allArticles op category 'Technologie' en roep showArticles() aan
+document.getElementById('filter-alle').addEventListener('click', () => {
+  showArticles(allArticles);
+});
 
-// Maak een eventlistener voor de #filter-media button
-// Filter allArticles op category 'Media' en roep showArticles() aan
+document.getElementById('filter-stad').addEventListener('click', () => {
+  const filteredArticles = allArticles.filter(article =>
+    article.category === 'Stad'
+  );
+
+  showArticles(filteredArticles);
+});
+
+document.getElementById('filter-technologie').addEventListener('click', () => {
+  const filteredArticles = allArticles.filter(article =>
+    article.category === 'Technologie'
+  );
+
+  showArticles(filteredArticles);
+});
+
+document.getElementById('filter-media').addEventListener('click', () => {
+  const filteredArticles = allArticles.filter(article =>
+    article.category === 'Media'
+  );
+
+  showArticles(filteredArticles);
+});
