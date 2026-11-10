@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "title": "Inception",
+    "director": "Christopher Nolan",
+    "year": 2010,
+    "genre": "Sciencefiction"
+  },
+  {
+    "title": "The Dark Knight",
+    "director": "Christopher Nolan",
+    "year": 2008,
+    "genre": "Actie"
+  },
+  {
+    "title": "Titanic",
+    "director": "James Cameron",
+    "year": 1997,
+    "genre": "Romantiek"
+  },
+  {
+    "title": "Jurassic Park",
+    "director": "Steven Spielberg",
+    "year": 1993,
+    "genre": "Avontuur"
+  }
+]
